@@ -9,12 +9,15 @@ private:
     float _b[];
     float _a[];
     int _order;
-    float _buffer_x[];
-    float _buffer_y[];
+    int bArrSize, aArrSize;
+    float _buffer_x[4];
+    float _buffer_y[4];
 
 public:
     FILTER();
     ~FILTER();
-    void setup(float b[], float a[], int order);
+    void setup(float b[], float a[], int order, int b_size, int a_size);
     float filter(float input_signal);
 };
+
+#endif
