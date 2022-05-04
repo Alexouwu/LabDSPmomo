@@ -1,21 +1,24 @@
 #ifndef _FILTER_H
 #define _FILTER_H
 
+#define _MAX 5
+
 class FILTER
 {
 private:
-    float _b[];
-    float _a[];
-    int _order;
+    //int _max = 5;
+    float _b[_MAX];
+    float _a[_MAX];
     int bArrSize, aArrSize;
-    float _buffer_x[4];
-    float _buffer_y[4];
+    float _buffer_x[_MAX];
+    float _buffer_y[_MAX];
 
 public:
     FILTER();
     ~FILTER();
-    void setup(float b[], float a[], int order, int b_size, int a_size);
+    void setup(float b[], float a[], int b_size, int a_size);
     float filter(float input_signal);
+    void getAll();
 };
 
 #endif
