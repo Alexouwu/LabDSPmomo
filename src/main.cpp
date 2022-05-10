@@ -13,6 +13,7 @@ float input_reading = 0;
 float input_volts;
 const int max_samples = 5000;
 float signal_readings[max_samples];
+float out_signals[3];
 
 
 
@@ -28,32 +29,23 @@ void setup() {
   float b_mov_avg[4] = {0.25, 0.25, 0.25, 0.25};
   float a_mov_avg[1] = {1};
 
- // butter.setup(b_butter, a_butter, order_butter);
- // iir_hpf.setup(b_iir_hpf, a_iir_hpf, order_iir_hpf);
-  mov_avg.setup(b_butter, a_butter, 3, 3);
-  mov_avg.setup(b_iir_hpf, a_iir_hpf, 3, 3);
+  butter.setup(b_butter, a_butter, 3, 3);
+  iir_hpf.setup(b_iir_hpf, a_iir_hpf, 3, 3);
   mov_avg.setup(b_mov_avg, a_mov_avg, 4, 1);
-  //mov_avg.setOrder(4);
-
-  //pinMode(adc_1, INPUT);
-  //Serial.write(13);
   
   adc_ldr.begin(ADC_PIN, 12, 3.3F);
+  input_reading = 1;
+
   
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
  
-  input_reading = adc_ldr.readRaw();
-  Serial.println("input_reading");
+  input_reading = adc_ldr.readVoltage();
+  out_signals[0] = butter.filter(input_reading);
+  out_signals[1] = iir_hpf.filter(input_reading);
+  out_signals[2] = mov_avg.filter(input_reading);
 
-  Serial.println(input_reading);
-  Serial.println(mov_avg.filter(input_reading));
-  //Serial.write(to_string(input_reading));
-  //out = mov_avg.filter(input_reading);
-  //Serial.println(mov_avg.filter(input_reading));
-  //Serial.print("HOLA");
-  //Serial.println(input_reading);
+  Serial.printf("%f,%f,%f,%f \n", input_reading, out_signals[0], out_signals[1], out_signals[2]);
+
 }

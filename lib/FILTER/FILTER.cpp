@@ -46,7 +46,7 @@ void FILTER::getAll()
 
 float FILTER::filter(float input_signal)
 {
-    // Update buffer
+    // Update input buffer
     for (int i = 0; i < bArrSize; i++)
     {
         _buffer_x[bArrSize-i] = _buffer_x[bArrSize-i-1];
@@ -59,17 +59,21 @@ float FILTER::filter(float input_signal)
     {
         filtered_signal_momo += _b[i] * _buffer_x[i];
     }
-    for(int i=0; i<aArrSize; i++)
+    
+
+    for(int i=1; i<aArrSize; i++)
     {
-        filtered_signal_momo -= _a[i] * _buffer_y[i];
+        filtered_signal_momo -= _a[i] * _buffer_y[i-1];
     }
 
-    for(int i=0; i<aArrSize-1; i++)
+
+    // Update output buffer
+    for (int i = 0; i < aArrSize; i++)
     {
-        _buffer_y[i+1] = _buffer_y[i];
+        _buffer_y[aArrSize-i] = _buffer_y[aArrSize-i-1];
     }
     
     _buffer_y[0] = filtered_signal_momo;
 
-    return filtered_signal_momo;
+    return filtered_signal_momo * _a[0];
 }

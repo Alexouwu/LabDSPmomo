@@ -6,7 +6,6 @@
 class FILTER
 {
 private:
-    //int _max = 5;
     float _b[_MAX];
     float _a[_MAX];
     int bArrSize, aArrSize;
