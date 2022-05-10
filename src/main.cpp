@@ -10,10 +10,8 @@ FILTER mov_avg;
 
 const byte ADC_PIN = 25;
 float input_reading = 0;
-float input_volts;
-const int max_samples = 5000;
-float signal_readings[max_samples];
 float out_signals[3];
+double start_time;
 
 
 
@@ -34,18 +32,21 @@ void setup() {
   mov_avg.setup(b_mov_avg, a_mov_avg, 4, 1);
   
   adc_ldr.begin(ADC_PIN, 12, 3.3F);
-  input_reading = 1;
+  start_time = micros();
+  //input_reading = 1;
 
   
 }
 
 void loop() {
  
+ if(micros() - start_time >= 5000)
+ {
   input_reading = adc_ldr.readVoltage();
   out_signals[0] = butter.filter(input_reading);
   out_signals[1] = iir_hpf.filter(input_reading);
   out_signals[2] = mov_avg.filter(input_reading);
 
   Serial.printf("%f,%f,%f,%f \n", input_reading, out_signals[0], out_signals[1], out_signals[2]);
-
+ }
 }

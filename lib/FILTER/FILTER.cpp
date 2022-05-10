@@ -75,5 +75,5 @@ float FILTER::filter(float input_signal)
     
     _buffer_y[0] = filtered_signal_momo;
 
-    return filtered_signal_momo * _a[0];
+    return filtered_signal_momo / _a[0];
 }
