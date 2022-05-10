@@ -12,6 +12,7 @@ const byte ADC_PIN = 25;
 float input_reading = 0;
 float out_signals[3];
 double start_time;
+float fs = 5000;
 
 
 
@@ -40,7 +41,7 @@ void setup() {
 
 void loop() {
  
- if(micros() - start_time >= 5000)
+ if(micros() - start_time >= fs)
  {
   input_reading = adc_ldr.readVoltage();
   out_signals[0] = butter.filter(input_reading);
